@@ -1,0 +1,65 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { CheckCircle2 } from "lucide-react"
+
+export function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    // Simulate form submission
+    setTimeout(() => {
+      setIsSubmitting(false)
+      setIsSubmitted(true)
+    }, 1500)
+  }
+
+  if (isSubmitted) {
+    return (
+      <div className="flex flex-col items-center justify-center p-6 text-center space-y-4 border rounded-lg h-full">
+        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <CheckCircle2 className="h-6 w-6 text-primary" />
+        </div>
+        <h3 className="text-xl font-semibold">Message Sent!</h3>
+        <p className="text-muted-foreground">Thank you for reaching out. I'll get back to you as soon as possible.</p>
+        <Button variant="outline" onClick={() => setIsSubmitted(false)}>
+          Send Another Message
+        </Button>
+      </div>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid gap-2">
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" placeholder="Your name" required />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" type="email" placeholder="Your email address" required />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="subject">Subject</Label>
+        <Input id="subject" placeholder="Subject of your message" required />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="message">Message</Label>
+        <Textarea id="message" placeholder="Your message" className="min-h-[120px]" required />
+      </div>
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
+        {isSubmitting ? "Sending..." : "Send Message"}
+      </Button>
+    </form>
+  )
+}
