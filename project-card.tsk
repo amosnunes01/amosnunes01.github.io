@@ -1,0 +1,65 @@
+"use client"
+
+import { useState } from "react"
+import Image from "next/image"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { ExternalLinkIcon, GithubIcon } from "lucide-react"
+
+interface ProjectCardProps {
+  title: string
+  description: string
+  tags: string[]
+  imageUrl: string
+  liveUrl?: string
+  githubUrl?: string
+}
+
+export function ProjectCard({ title, description, tags, imageUrl, liveUrl, githubUrl }: ProjectCardProps) {
+  const [isHovered, setIsHovered] = useState(false)
+
+  return (
+    <Card
+      className="overflow-hidden transition-all duration-300 hover:shadow-lg"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative h-48 w-full overflow-hidden">
+        <Image
+          src={imageUrl || "/placeholder.svg"}
+          alt={title}
+          fill
+          className={`object-cover transition-transform duration-500 ${isHovered ? "scale-110" : "scale-100"}`}
+        />
+      </div>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Badge key={tag} variant="secondary">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </CardContent>
+      <CardFooter className="flex gap-2">
+        {liveUrl && (
+          <Button variant="outline" size="sm" className="gap-1">
+            <ExternalLinkIcon className="h-4 w-4" />
+            Live Demo
+          </Button>
+        )}
+        {githubUrl && (
+          <Button variant="outline" size="sm" className="gap-1">
+            <GithubIcon className="h-4 w-4" />
+            Code
+          </Button>
+        )}
+      </CardFooter>
+    </Card>
+  )
+}
